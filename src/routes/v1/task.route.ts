@@ -29,7 +29,7 @@ export default router;
  * tags:
  *   name: Tasks
  *   description: >
- *    **You MUST register to create task**.
+ *    *You MUST register to create task*.
  *    Task management and retrieval.
  *    Please take note of the annotations. 
  *    [Admin] = this means only admin and Owner can access this endpoint.
