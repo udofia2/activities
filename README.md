@@ -1,14 +1,14 @@
 ## Description
 This is a task management system that allows users to register and create private and shared tasks. Shared tasks can be seen by anyone while private tasks are seen only by the owner of the task. Fully paginated.
 
-- [Documentation](https://tasks-management-socket.onrender.com/v1/docs)
+- [Documentation](https://activities-csay.onrender.com/v1/doc)
 
 ## Quick Start
 
 Clone the repo:
 
 ```bash
-git clone https://github.com/udofia2/tasks-management-socket.git
+git clone https://github.com/udofia2/activities.git
 ```
 ```
 cd tasks-management-socket
@@ -116,6 +116,7 @@ List of available routes:
 `POST /v1/tasks` - create a task\
 `GET /v1/tasks` - get all tasks including published and draft\
 `GET /v1/tasks/shared` - get all shared tasks\
+`GET /v1/tasks/completed` - get all completed tasks\
 `GET /v1/tasks/my/tasks` - get all created tasks for a login user\
 `GET /v1/tasks/:taskId` - get task\
 `PATCH /v1/tasks/:taskId` - update task by a login user\
@@ -148,6 +149,7 @@ List of available routes:
     Task:
       -  _id (primary key)
       -  title (unique)
+      -  isCompleted
       -  description
       -  owner_id (foreign key referencing User._id)
       -  status
