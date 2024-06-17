@@ -42,6 +42,7 @@ export const updateTask = {
     .keys({
       title: Joi.string(),
       description: Joi.string(),
+      isCompleted: Joi.boolean().valid(true, false),
       status: Joi.string().valid(STATE_TYPES_ENUM.SHARED, STATE_TYPES_ENUM.PRIVATE),
     })
     .min(1),
