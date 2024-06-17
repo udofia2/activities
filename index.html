@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-time Task Management</title>
+  <style>
+    #task-list {
+      margin-bottom: 1rem;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #task-list li {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+    }
+
+    #task-list li strong {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div id="task-container">
+    <h1>Real-time Task Updates</h1>
+    <ul id="task-list"></ul>
+  </div>
+
+<script type="module">
+import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+
+const socket = io.connect('http://localhost:3000', { rejectUnauthorized: false });
+
+const taskList = document.getElementById('task-list');
+
+const createTaskItem = (task, status) => {
+  const taskListItem = document.createElement('li');
+  taskListItem.innerHTML = `
+    <strong>${task.title}</strong> (${status})<br>
+    <em>${task.description}</em><br>
+    Owner: ${task.owner}<br>
+    Status: ${task.status}<br>
+    View count: <span class="view-count">${task.view_count}</span><br>
+    Tags: ${task.tags.join(', ')}<br>
+    ID: ${task.id}
+  `;
+  taskListItem.dataset.taskId = task.id;
+  return taskListItem;
+};
+
+socket.on('taskCreated', (task) => {
+  const taskListItem = createTaskItem(task, 'Created');
+  taskList.appendChild(taskListItem);
+});
+
+socket.on('taskUpdated', (updatedTask) => {
+  const existingTask = taskList.querySelector(`li[data-task-id="${updatedTask.id}"]`);
+  if (existingTask) {
+    existingTask.innerHTML = `
+      <strong>${updatedTask.title}</strong> (Updated)<br>
+      <em>${updatedTask.description}</em><br>
+      Owner: ${updatedTask.owner}<br>
+      Status: ${updatedTask.status}<br>
+      View count: <span class="view-count">${updatedTask.view_count}</span><br>
+      Tags: ${updatedTask.tags.join(', ')}<br>
+      ID: ${updatedTask.id}
+    `;
+  } else {
+    console.warn(`Task with ID "${updatedTask.id}" not found for update.`);
+  }
+});
+
+socket.on('viewCountUpdated', (data) => {
+  const existingTask = taskList.querySelector(`li[data-task-id="${data.id}"]`);
+  if (existingTask) {
+    const viewCountElement = existingTask.querySelector('.view-count');
+    if (viewCountElement) {
+      viewCountElement.textContent = data.view_count;
+    }
+  } else {
+    console.warn(`Task with ID "${data.id}" not found for view count update.`);
+  }
+});
+</script>
+</body>
+</html>

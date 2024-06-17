@@ -12,6 +12,7 @@ router
   .get(auth('getTasks'), validate(taskValidation.getTasks), taskController.getTasks);
 
 router.route('/shared').get(validate(taskValidation.getTasks), taskController.getSharedTasks);
+router.route('/completed').get(validate(taskValidation.getTasks), taskController.getCompletedTasks);
 
 router.route('/my/tasks').get(auth('getMyTasks'), validate(taskValidation.getTasks), taskController.getMyTasks);
 
@@ -28,6 +29,7 @@ export default router;
  * tags:
  *   name: Tasks
  *   description: >
+ *    **You MUST register to create task**.
  *    Task management and retrieval.
  *    Please take note of the annotations. 
  *    [Admin] = this means only admin and Owner can access this endpoint.
@@ -114,6 +116,90 @@ export default router;
  *         schema:
  *           type: string
  *         description: project by query in the form of field:hide/include (ex. name:hide)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         default: 20
+ *         description: Maximum number of users
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 results:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Task'
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 limit:
+ *                   type: integer
+ *                   example: 10
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 1
+ *                 totalResults:
+ *                   type: integer
+ *                   example: 1
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ */
+
+/**
+ * @swagger
+ * /tasks/completed:
+ *   get:
+ *     summary: Get all completed tasks
+ *     description: Both loggin and not loggin users can see list of all completed tasks.
+ *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *         description: Filter by Title of the task
+ *       - in: query
+ *         name: owner
+ *         schema:
+ *           type: string
+ *         description: Filter by the owner that completed the task
+ *       - in: query
+ *         name: tags
+ *         schema:
+ *           type: string
+ *         description: Search by tags
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: sort by query in the form of field:desc/asc (ex. createdAt:desc)
+ *       - in: query
+ *         name: projectBy
+ *         schema:
+ *           type: string
+ *         description: project by query in the form of field:hide/include (ex. name:hide)
+ *       - in: query
+ *         name: populate
+ *         schema:
+ *           type: string
+ *         description: populate a field by name (ex. owner)
  *       - in: query
  *         name: limit
  *         schema:

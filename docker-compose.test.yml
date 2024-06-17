@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  app:
+    container_name: tasks-management-socket-test
+    command: yarn test:js
