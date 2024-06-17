@@ -1,0 +1,4 @@
+export enum STATE_TYPES_ENUM {
+  SHARED = "SHARED",
+  PRIVATE = "PRIVATE"
+}
