@@ -150,7 +150,7 @@ List of available routes:
       -  _id (primary key)
       -  title (unique)
       -  isCompleted
-      -  description
+      -  description(boolean)
       -  owner_id (foreign key referencing User._id)
       -  status
       -  view_count
