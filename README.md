@@ -40,12 +40,12 @@ yarn start
 
 docker for dev
 ```bash
-yarn start
+yarn docker:dev
 
 ```
 docker for prod
 ```bash
-yarn start
+yarn docker:prod
 ```
 Compiling to JS from TS
 
