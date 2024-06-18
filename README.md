@@ -1,7 +1,7 @@
 ## Description
 This is a task management system that allows users to register and create tasks. Users can mark tasks as completed. Users can create private and shared tasks. Completed tasks and Shared tasks can be seen by anyone while private tasks are seen only by the owner of the task. Fully paginated.
 
-- [Documentation](https://activities-csay.onrender.com/v1/doc)
+- [Documentation](https://activities-csay.onrender.com/v1/docs)
 
 ## Quick Start
 
